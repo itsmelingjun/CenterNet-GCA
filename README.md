@@ -19,3 +19,6 @@ torch==1.13.0
 ##   Attention注意事项
 1.  仅对主干网络为ResNet50的情况进行了相应改进，代码中所有的backbone参数只支持resnet50
 2.  检测大尺寸图片时需要先裁剪为小尺寸图片（分辨率在512*512效果较好），再使用CenterNet-GCA识别
+##   Reference
+https://github.com/bubbliiiing/centernet-pytorch
+https://github.com/xingyizhou/CenterNet
