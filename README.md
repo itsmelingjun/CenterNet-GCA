@@ -8,7 +8,7 @@ torch==1.13.0
 提取码: 8x95
 ##   Instructions使用说明
 ###   使用CenterNet-GCA对卵石图片进行检测
-1.  下载权重，并将其存放地址修改写入newmask_CenterNet文件中的model_path参数
+1.  下载权重，并将其存放地址修改写入newmask_CenterNet文件中的model_path参数。
 2.  根据需要，修改newmask_predict文件中的mode参数。若选择dir_predict模式，还需修改dir_origin_path、dir_save_path参数。
 3.  可根据检测效果微调newmask_CenterNet文件中的confidence参数，建议从0.2开始调整。
 ###   使用CenterNet-GCA训练新的卵石数据集
@@ -17,8 +17,8 @@ torch==1.13.0
 ##   Example检测示例
 ![Alt Text](CenterNet-GCA.png)
 ##   Attention注意事项
-1.  仅对主干网络为ResNet50的情况进行了相应改进，代码中所有的backbone参数只支持resnet50
-2.  检测大尺寸图片时需要先裁剪为小尺寸图片（分辨率在512*512效果较好），再使用CenterNet-GCA识别
+1.  仅对主干网络为ResNet50的情况进行了相应改进，代码中所有的backbone参数只支持resnet50。
+2.  检测大尺寸图片时需要先裁剪为小尺寸图片（模型训练时的输入尺寸为512*51），再使用CenterNet-GCA识别。
 ##   Reference
-1.  https://github.com/bubbliiiing/centernet-pytorch
-2.  https://github.com/xingyizhou/CenterNet
+-  https://github.com/bubbliiiing/centernet-pytorch
+-  https://github.com/xingyizhou/CenterNet
