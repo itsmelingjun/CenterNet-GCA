@@ -158,7 +158,6 @@ def resnet50FPN(pretrained=True):
     model = ResNetFPN(Bottleneck, [3, 4, 6, 3])
     if pretrained:
         state_dict = load_state_dict_from_url(model_urls['resnet50'], model_dir='model_data/')
-        # 注意：只加载与 backbone 匹配的部分
         backbone_dict = {k: v for k, v in state_dict.items() if k in model.state_dict()}
         model.load_state_dict(backbone_dict, strict=False)
     return model
@@ -300,3 +299,4 @@ class resnet50_maskHead(nn.Module):
                              align_corners=False)  # (B, nc, H, W)
 
         return hm, wh, offset, mask
+
