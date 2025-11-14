@@ -60,11 +60,10 @@ class Bottleneck(nn.Module):
 class FPN(nn.Module):
     def __init__(self):
         super(FPN, self).__init__()
-        # 横向连接：统一通道到256
+        # 统一通道到256
         self.latlayer1 = nn.Conv2d(1024, 256, kernel_size=1, stride=1, padding=0)
         self.latlayer2 = nn.Conv2d(512, 256, kernel_size=1, stride=1, padding=0)
         self.latlayer3 = nn.Conv2d(256, 256, kernel_size=1, stride=1, padding=0)
-        # 顶层 P5: C5 -> 256
         self.toplayer = nn.Conv2d(2048, 256, kernel_size=1, stride=1, padding=0)
         # 平滑层
         self.smooth1 = nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1)
@@ -187,7 +186,7 @@ class resnet50_SEDecoder(nn.Module):
         self.bn_momentum = bn_momentum
         self.inplanes = inplanes  # fuse_conv输出通道
         self.deconv_with_bias = False
-        # 注意力机制分配权重
+        # 分配权重
         #self.se2 = SEBlock(256)
         self.se3 = SEBlock(256)
         self.se4 = SEBlock(256)
@@ -226,7 +225,7 @@ class resnet50_SEDecoder(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, p3, p4, p5):
-        # SE增强
+        # 分配权重
         #p2_se = self.se2(p2)
         p3_se = self.se3(p3)
         p4_se = self.se4(p4)
@@ -299,4 +298,5 @@ class resnet50_maskHead(nn.Module):
                              align_corners=False)  # (B, nc, H, W)
 
         return hm, wh, offset, mask
+
 
