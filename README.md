@@ -4,8 +4,8 @@
 torch==1.13.0
 ##   Trained Weights
 The pre-trained weights UD00.pth, UD00H1.pth, and UDH00.pth, trained on natural pebble and Hassan laboratory pebble datasets, can be downloaded from Baidu Netdisk.
-link: https://pan.baidu.com/s/1rMWSSVxKAHcL5FRsB2YDtg
-Extraction code: 8x95
+-  link: https://pan.baidu.com/s/1rMWSSVxKAHcL5FRsB2YDtg
+-  Extraction code: 8x95
 ##   Instructions
 ###   使用CenterNet-GCA对卵石图片进行检测
 1.  下载权重，并将其存放地址修改写入newmask_CenterNet文件中的model_path参数。
@@ -29,8 +29,8 @@ The following detection results were obtained using the UD00 weights.
 torch==1.13.0
 ##   权重下载
 已在天然卵石和Hassan实验室卵石数据集上训练好的权重UD00.pth、UD00H1.pth和UDH00.pth可在百度网盘中下载。
-链接: https://pan.baidu.com/s/1rMWSSVxKAHcL5FRsB2YDtg
-提取码: 8x95
+-  链接: https://pan.baidu.com/s/1rMWSSVxKAHcL5FRsB2YDtg
+-  提取码: 8x95
 ##   使用说明
 ###   使用CenterNet-GCA对卵石图片进行检测
 1.  下载权重，并将其存放地址修改写入newmask_CenterNet文件中的model_path参数。
