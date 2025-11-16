@@ -1,4 +1,4 @@
-#   CenterNet-GCA:CenterNet for gravel clusters analysis
+#   CenterNet-GCA:CenterNet for Gravel Clusters Analysis
 ![Alt Text](CenterNet-GCA.png)
 ##   Environment
 torch==1.13.0
@@ -32,6 +32,25 @@ torch==1.13.0
 -  链接: https://pan.baidu.com/s/1rMWSSVxKAHcL5FRsB2YDtg
 -  提取码: 8x95
 ##   使用说明
+###  使用Anaconda配置环境  
+下载Anaconda，官网链接https://www.anaconda.com  
+安装完成后打开Anaconda Prompt，输入以下代码，创建一个名为‘centernetgca’的新环境、安装Python 3.7及部分基础依赖
+```Python
+conda create --name centernetgca python=3.7
+```
+在Anaconda Prompt输入如下指令进入新创建好的环境  
+```Python
+conda activate centernetgca
+```
+保存requirements.txt文件到本地，如保存在桌面，输入以下代码进入文件所在路径（需修改为真实路径）  
+```Python
+cd C:\Users\example\Desktop
+```
+再运行下面的指令即可安装所有的依赖
+```Python
+pip install -r requirements.txt
+```
+###  使用Anaconda配置环境 
 ###   使用CenterNet-GCA对卵石图片进行检测
 1.  下载权重，并将其存放地址修改写入newmask_CenterNet文件中的model_path参数。
 2.  根据需要，修改newmask_predict文件中的mode参数。若选择dir_predict模式，还需修改dir_origin_path、dir_save_path参数。
