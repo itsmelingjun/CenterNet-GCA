@@ -52,11 +52,11 @@ pip install -r requirements.txt
 ```
 ###  2.新建python项目
 在PyCharm中新建项目centernetgca，选择Previously confugured Interpreter，并且在Anaconda目录中的env文件夹下目标环境文件夹中选中python.exe文件。  
+![Alt Text](project.jpg)
 -  若无PyCharm，请先下载，官网链接https://www.jetbrains.com/pycharm/  
 ###  3.使用CenterNet-GCA对卵石图片进行检测  
-下载代码并保存在项目所在目录。  
-下载权重并将其存放地址写入newmask_CenterNet.py文件中的model_path参数。  
--  根据需要，修改newmask_predict.py文件中的mode参数。若选择dir_predict模式，还需修改dir_origin_path、dir_save_path参数。
+a.下载代码并保存在项目所在目录。  
+b.下载权重存放在model_data文件夹，并将其存放地址写入newmask_CenterNet.py文件中的model_path参数。根据需要，修改newmask_predict.py文件中的mode参数。若选择dir_predict模式，还需修改dir_origin_path、dir_save_path参数。
 -  可根据检测效果微调newmask_CenterNet.py文件中的confidence参数，建议从0.2开始调整。
 ###  4.使用CenterNet-GCA训练新的卵石数据集
 根据需要，修改newmask_train.py文件中的相关训练参数。
