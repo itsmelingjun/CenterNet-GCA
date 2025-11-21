@@ -15,9 +15,7 @@ from utils.utils_bbox import decode_bbox, postprocess
 
 
 # --------------------------------------------#
-#   使用自己训练好的模型预测需要修改3个参数
-#   model_path、classes_path和backbone
-#   都需要修改！
+#   使用自己训练好的模型预测需要修改参数model_path
 #   如果出现shape不匹配，一定要注意
 #   训练时的model_path和classes_path参数的修改
 # --------------------------------------------#
@@ -26,16 +24,12 @@ class CenterNet(object):
         # --------------------------------------------------------------------------#
         #   使用自己训练好的模型进行预测一定要修改model_path和classes_path！
         #   model_path指向logs文件夹下的权值文件，classes_path指向model_data下的txt
-        #
-        #   训练好后logs文件夹下存在多个权值文件，选择验证集损失较低的即可。
-        #   验证集损失较低不代表mAP较高，仅代表该权值在验证集上泛化性能较好。
-        #   如果出现shape不匹配，同时要注意训练时的model_path和classes_path参数的修改
         # --------------------------------------------------------------------------#
         "model_path": '',
         "classes_path": 'model_data/voc_classes.txt',
         # --------------------------------------------------------------------------#
         #   用于选择所使用的模型的主干
-        #   resnet50, hourglass
+        #   仅支持resnet50
         # --------------------------------------------------------------------------#
         "backbone": 'resnet50',
         # --------------------------------------------------------------------------#
@@ -52,12 +46,11 @@ class CenterNet(object):
         "nms_iou": 0.3,
         # --------------------------------------------------------------------------#
         #   是否进行非极大抑制，可以根据检测效果自行选择
-        #   backbone为resnet50时建议设置为True、backbone为hourglass时建议设置为False
+        #   backbone为resnet50时建议设置为True
         # --------------------------------------------------------------------------#
         "nms": True,
         # ---------------------------------------------------------------------#
-        #   该变量用于控制是否使用letterbox_image对输入图像进行不失真的resize，
-        #   在多次测试后，发现关闭letterbox_image直接resize的效果更好
+        #   该变量用于控制是否使用letterbox_image对输入图像进行不失真的resize
         # ---------------------------------------------------------------------#
         "letterbox_image": False,
         # -------------------------------#
@@ -158,17 +151,7 @@ class CenterNet(object):
             #   利用预测结果进行解码
             # -----------------------------------------------------------#
             outputs = decode_bbox(outputs[0], outputs[1], outputs[2], self.confidence, self.cuda)
-
-            # -------------------------------------------------------#
-            #   对于centernet网络来讲，确立中心非常重要。
-            #   对于大目标而言，会存在许多的局部信息。
-            #   此时对于同一个大目标，中心点比较难以确定。
-            #   使用最大池化的非极大抑制方法无法去除局部框
-            #   所以我还是写了另外一段对框进行非极大抑制的代码
-            #   实际测试中，hourglass为主干网络时有无额外的nms相差不大，resnet相差较大。
-            # -------------------------------------------------------#
             results = postprocess(outputs, self.nms, image_shape, self.input_shape, self.letterbox_image, self.nms_iou)
-
             # --------------------------------------#
             #   如果没有检测到物体，则返回原图
             # --------------------------------------#
@@ -247,9 +230,10 @@ class CenterNet(object):
             del draw
 
         return image
-        #return image, classes_nums
-
-
+   
+    # ---------------------------------------------------#
+    #   检测图片输出掩码
+    # ---------------------------------------------------#
     def detect_mask(self, image, alpha=0.5):
         # ---------------------------------------------------#
         #  转为RGB
@@ -267,7 +251,7 @@ class CenterNet(object):
             if self.cuda:
                 images = images.cuda()
             # ---------------------------------------------------#
-            #  得到 hm, wh, offset, mask
+            #  得到hm, wh, offset, mask
             # ---------------------------------------------------#
             outputs = self.net(images)
             if self.backbone == 'resnet50':
@@ -333,15 +317,6 @@ class CenterNet(object):
             #   利用预测结果进行解码
             # -----------------------------------------------------------#
             outputs = decode_bbox(outputs[0], outputs[1], outputs[2], self.confidence, self.cuda)
-
-            # -------------------------------------------------------#
-            #   对于centernet网络来讲，确立中心非常重要。
-            #   对于大目标而言，会存在许多的局部信息。
-            #   此时对于同一个大目标，中心点比较难以确定。
-            #   使用最大池化的非极大抑制方法无法去除局部框
-            #   所以我还是写了另外一段对框进行非极大抑制的代码
-            #   实际测试中，hourglass为主干网络时有无额外的nms相差不大，resnet相差较大。
-            # -------------------------------------------------------#
             results = postprocess(outputs, self.nms, image_shape, self.input_shape, self.letterbox_image, self.nms_iou)
 
         t1 = time.time()
@@ -357,15 +332,6 @@ class CenterNet(object):
                 #   利用预测结果进行解码
                 # -----------------------------------------------------------#
                 outputs = decode_bbox(outputs[0], outputs[1], outputs[2], self.confidence, self.cuda)
-
-                # -------------------------------------------------------#
-                #   对于centernet网络来讲，确立中心非常重要。
-                #   对于大目标而言，会存在许多的局部信息。
-                #   此时对于同一个大目标，中心点比较难以确定。
-                #   使用最大池化的非极大抑制方法无法去除局部框
-                #   所以我还是写了另外一段对框进行非极大抑制的代码
-                #   实际测试中，hourglass为主干网络时有无额外的nms相差不大，resnet相差较大。
-                # -------------------------------------------------------#
                 results = postprocess(outputs, self.nms, image_shape, self.input_shape, self.letterbox_image,
                                       self.nms_iou)
         t2 = time.time()
@@ -375,7 +341,6 @@ class CenterNet(object):
     def detect_heatmap(self, image, heatmap_save_path):
         import cv2
         import matplotlib.pyplot as plt
-
         # ---------------------------------------------------------#
         #   在这里将图像转换成RGB图像，防止灰度图在预测时报错。
         #   代码仅仅支持RGB图像的预测，所有其它类型的图像都会转化成RGB
@@ -492,17 +457,7 @@ class CenterNet(object):
             #   利用预测结果进行解码
             # -----------------------------------------------------------#
             outputs = decode_bbox(outputs[0], outputs[1], outputs[2], self.confidence, self.cuda)
-
-            # -------------------------------------------------------#
-            #   对于centernet网络来讲，确立中心非常重要。
-            #   对于大目标而言，会存在许多的局部信息。
-            #   此时对于同一个大目标，中心点比较难以确定。
-            #   使用最大池化的非极大抑制方法无法去除局部框
-            #   所以我还是写了另外一段对框进行非极大抑制的代码
-            #   实际测试中，hourglass为主干网络时有无额外的nms相差不大，resnet相差较大。
-            # -------------------------------------------------------#
             results = postprocess(outputs, self.nms, image_shape, self.input_shape, self.letterbox_image, self.nms_iou)
-
             # --------------------------------------#
             #   如果没有检测到物体，则返回原图
             # --------------------------------------#
@@ -528,3 +483,4 @@ class CenterNet(object):
 
         f.close()
         return
+
