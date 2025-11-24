@@ -1,5 +1,5 @@
 #   CenterNet-GCA:CenterNet for Gravel Clusters Analysis
-![Alt Text](CenterNet-GCA.png)
+![Alt Text](CenterNet-GCA.pdf)
 ##   Environment
 torch==1.13.0
 ##   Trained Weights
@@ -7,10 +7,33 @@ The pre-trained weights UD00.pth, UD00H1.pth, and UDH00.pth, trained on natural 
 -  link: https://pan.baidu.com/s/1rMWSSVxKAHcL5FRsB2YDtg
 -  Extraction code: 8x95
 ##   Instructions
-###   使用CenterNet-GCA对卵石图片进行检测
-1.  下载权重，并将其存放地址修改写入newmask_CenterNet文件中的model_path参数。
-2.  根据需要，修改newmask_predict文件中的mode参数。若选择dir_predict模式，还需修改dir_origin_path、dir_save_path参数。
-3.  可根据检测效果微调newmask_CenterNet文件中的confidence参数，建议从0.2开始调整。
+###  1.Setting up the environment using Anaconda    
+Open the Anaconda Prompt and enter the following commands to create a new environment named centernetgca, install Python 3.7, and set up some basic dependencies.  
+```Python
+conda create --name centernetgca python=3.7
+```
+Enter the following command in the Anaconda Prompt to activate the newly created environment.  
+```Python
+conda activate centernetgca
+```
+Save the requirements.txt file locally, for example on the desktop, and enter the following command to navigate to the directory where the file is located (replace it with the actual path).    
+```Python
+cd C:\Users\name\Desktop
+```
+Then run the following command to install all the required dependencies.  
+```Python
+pip install -r requirements.txt
+```
+-  If you don't have Anaconda, please download it first. Official website link: https://www.anaconda.com 
+###  2.Create python project named centernetgca  
+Create a new project named centernetgca in PyCharm, select Previously configured Interpreter, and choose the python.exe file located in the target environment folder inside the envs directory of your Anaconda installation.  
+![Alt Text](project.jpg)
+-  If you don't have PyCharm, please download it first from the official website: https://www.jetbrains.com/pycharm/  
+###  3.Using CenterNet-GCA to detect pebbles in images   
+a.Download the code and save it in the project directory.    
+b.Download the weights into the model_data folder, and specify their path in the model_path parameter inside the newmask_CenterNet.py file.    
+c.Modify the mode parameter in the newmask_predict.py file as needed. If dir_predict mode is selected, also update the dir_origin_path and dir_save_path parameters.  
+d.You may fine-tune the confidence parameter in newmask_CenterNet.py based on detection performance. It is recommended to start adjusting from 0.2.  
 ##   Example
 The following detection results were obtained using the UD00 weights.
 ![Alt Text](img_out/1.JPG)
