@@ -108,7 +108,7 @@ class CenternetDataset(Dataset):
             boxes[:, [1, 3]] = np.clip(boxes[:, [1, 3]] / self.input_shape[0] * self.output_shape[0], 0,
                                        self.output_shape[0] - 1)
 
-        ellipse_ratio = 1.6  # 控制椭圆长短轴比例，可调超参数
+        ellipse_ratio = 1.6  # 控制椭圆长短轴比例，可调参数
 
         for i in range(len(box)):
             bbox = boxes[i].copy()
@@ -126,9 +126,9 @@ class CenternetDataset(Dataset):
                 # ----------------------------#
                 #   绘制椭圆高斯热力图
                 # ----------------------------#
-                angle_deg = angle[i]  # 取出该目标的角度（单位：度）
+                angle_deg = angle[i]  # 取出该目标的角度
                 angle_rad = np.deg2rad(-(angle_deg + 90))   # 将角度转换为弧度
-                # 采用 radius 为椭圆半轴短轴，乘以比例因子得到椭圆半轴长轴
+                # 采用radius为椭圆半轴短轴，乘以比例参数得到椭圆半轴长轴
                 radius_y = radius
                 radius_x = int(radius * ellipse_ratio)
                 batch_hm[:, :, cls_id] = draw_ellipse_gaussian(batch_hm[:, :, cls_id], ct, radius_x, radius_y, angle_rad)
@@ -163,10 +163,10 @@ class CenternetDataset(Dataset):
         image = cvtColor(image)  # line[1:]是一系列目标框，格式：x1,y1,x2,y2,angle,class_id
         mask_path = image_path.replace("JPEGImages", "Mask").replace(".jpg", ".png") # 获取mask路径
         if os.path.exists(mask_path):
-            mask = Image.open(mask_path).convert("L")  # PIL模式，便于同步处理
+            mask = Image.open(mask_path).convert("L")  
             mask = mask.point(lambda p: 255 if p > 127 else 0)
         else:
-            mask = Image.new("L", image.size, 0)  # 空mask
+            mask = Image.new("L", image.size, 0)  
         # ------------------------------#
         #   获得图像的高宽与目标高宽
         # ------------------------------#
@@ -323,4 +323,5 @@ def centernet_dataset_collate(batch):
             torch.from_numpy(np.array(batch_regs)).float(),
             torch.from_numpy(np.array(batch_reg_masks)).float(),
             torch.from_numpy(np.array(masks)).unsqueeze(1).float())  # mask格式: (B, 1, H, W)
+
 
