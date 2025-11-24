@@ -16,10 +16,11 @@ class CenterNet_Resnet50(nn.Module):
         # 16,16,2048 -> 128,128,64
         self.decoder = resnet50_SEDecoder(inplanes=256)
         # -----------------------------------------------------------------#
-        #   对获取到的特征进行上采样，进行分类预测和回归预测
+        #   对获取到的特征进行上采样，进行分类预测、回归预测和mask预测
         #   128, 128, 64 -> 128, 128, 64 -> 128, 128, num_classes
         #                -> 128, 128, 64 -> 128, 128, 2
         #                -> 128, 128, 64 -> 128, 128, 2
+        #                -> 128, 128, 64 -> 128, 128, num_classes
         # -----------------------------------------------------------------#
         self.head = resnet50_maskHead(channel=64, num_classes=num_classes)
 
@@ -159,3 +160,4 @@ class CenterNet_HourglassNet(nn.Module):
                 out[head] = self.__getattr__(head)[ind](cnv)
             outs.append(out)
         return outs
+
