@@ -88,8 +88,7 @@ class FPN(nn.Module):
 
 
 # -----------------------------------------------------------------#
-#   使用Renset50作为主干特征提取网络，最终会获得一个
-#   16x16x2048的有效特征层
+#   使用Renset50作为主干特征提取网络，并使用FPN融合特征
 # -----------------------------------------------------------------#
 class ResNetFPN(nn.Module):
     def __init__(self, block, layers, num_classes=1000):
@@ -245,13 +244,7 @@ class resnet50_SEDecoder(nn.Module):
 class resnet50_maskHead(nn.Module):
     def __init__(self, num_classes=80, channel=64, bn_momentum=0.1):
         super(resnet50_maskHead, self).__init__()
-        # -----------------------------------------------------------------#
-        #   对获取到的特征进行上采样，进行分类预测和回归预测
-        #   128, 128, 64 -> 128, 128, 64 -> 128, 128, num_classes
-        #                -> 128, 128, 64 -> 128, 128, 2
-        #                -> 128, 128, 64 -> 128, 128, 2
-        #                -> 128, 128, 64 -> 512, 512, 1
-        # -----------------------------------------------------------------#
+       
         # 热力图预测部分
         self.cls_head = nn.Sequential(
             nn.Conv2d(64, channel,
@@ -298,5 +291,6 @@ class resnet50_maskHead(nn.Module):
                              align_corners=False)  # (B, nc, H, W)
 
         return hm, wh, offset, mask
+
 
 
