@@ -44,21 +44,7 @@ def fit_one_epoch(model_train, model, loss_history, eval_callback, optimizer, ep
                 total_c_loss += c_loss.item()
                 total_r_loss += wh_loss.item() + off_loss.item()
                 total_m_loss += m_loss.item()
-            # else:
-            #     outputs = model_train(batch_images)
-            #     loss = 0
-            #     c_loss_all = 0
-            #     r_loss_all = 0
-            #     index = 0
-            #     for output in outputs:
-            #         hm, wh, offset = output["hm"].sigmoid(), output["wh"], output["reg"]
-            #         c_loss = focal_loss(hm, batch_hms)
-            #         c_loss_all += c_loss
-            #         r_loss_all += wh_loss + off_loss
-            #         index += 1
-            #     total_loss += loss.item() / index
-            #     total_c_loss += c_loss_all.item() / index
-            #     total_r_loss += r_loss_all.item() / index
+           
             loss.backward()
             optimizer.step()
         else:
@@ -77,26 +63,7 @@ def fit_one_epoch(model_train, model, loss_history, eval_callback, optimizer, ep
                     total_c_loss += c_loss.item()
                     total_r_loss += wh_loss.item() + off_loss.item()
                     total_m_loss += m_loss.item()
-                # else:
-                #     outputs = model_train(batch_images)
-                #     loss = 0
-                #     c_loss_all = 0
-                #     r_loss_all = 0
-                #     index = 0
-                #     for output in outputs:
-                #         hm, wh, offset = output["hm"].sigmoid(), output["wh"], output["reg"]
-                #         c_loss = focal_loss(hm, batch_hms)
-                #         wh_loss = 0.1 * reg_l1_loss(wh, batch_whs, batch_reg_masks)
-                #         off_loss = reg_l1_loss(offset, batch_regs, batch_reg_masks)
-                #
-                #         loss += c_loss + wh_loss + off_loss
-                #
-                #         c_loss_all += c_loss
-                #         r_loss_all += wh_loss + off_loss
-                #         index += 1
-                #     total_loss += loss.item() / index
-                #     total_c_loss += c_loss_all.item() / index
-                #     total_r_loss += r_loss_all.item() / index
+              
             # ----------------------#
             #   反向传播
             # ----------------------#
@@ -137,19 +104,6 @@ def fit_one_epoch(model_train, model, loss_history, eval_callback, optimizer, ep
                 loss = c_loss + wh_loss + off_loss + m_loss
 
                 val_loss += loss.item()
-            # else:
-            #     outputs = model_train(batch_images)
-            #     index = 0
-            #     loss = 0
-            #     for output in outputs:
-            #         hm, wh, offset = output["hm"].sigmoid(), output["wh"], output["reg"]
-            #         c_loss = focal_loss(hm, batch_hms)
-            #         wh_loss = 0.1 * reg_l1_loss(wh, batch_whs, batch_reg_masks)
-            #         off_loss = reg_l1_loss(offset, batch_regs, batch_reg_masks)
-            #
-            #         loss += c_loss + wh_loss + off_loss
-            #         index += 1
-            #     val_loss += loss.item() / index
 
             if local_rank == 0:
                 pbar.set_postfix(**{'val_loss': val_loss / (iteration + 1)})
@@ -173,5 +127,6 @@ def fit_one_epoch(model_train, model, loss_history, eval_callback, optimizer, ep
         if len(loss_history.val_loss) <= 1 or (val_loss / epoch_step_val) <= min(loss_history.val_loss):
             print('Save best model to best_epoch_weights.pth')
             torch.save(model.state_dict(), os.path.join(save_dir, "best_epoch_weights.pth"))
+
 
         torch.save(model.state_dict(), os.path.join(save_dir, "last_epoch_weights.pth"))
