@@ -144,14 +144,6 @@ class EvalCallback():
             #-----------------------------------------------------------#
             outputs = decode_bbox(outputs[0], outputs[1], outputs[2], self.confidence, self.cuda)
 
-            #-------------------------------------------------------#
-            #   对于centernet网络来讲，确立中心非常重要。
-            #   对于大目标而言，会存在许多的局部信息。
-            #   此时对于同一个大目标，中心点比较难以确定。
-            #   使用最大池化的非极大抑制方法无法去除局部框
-            #   所以我还是写了另外一段对框进行非极大抑制的代码
-            #   实际测试中，hourglass为主干网络时有无额外的nms相差不大，resnet相差较大。
-            #-------------------------------------------------------#
             results = postprocess(outputs, self.nms, image_shape, self.input_shape, self.letterbox_image, self.nms_iou)
             
             #--------------------------------------#
@@ -249,3 +241,4 @@ class EvalCallback():
 
             print("Get map done.")
             shutil.rmtree(self.map_out_path)
+
