@@ -20,16 +20,16 @@ Save the requirements.txt file locally, for example on the desktop, and enter th
 ```Python
 cd C:\Users\name\Desktop
 ```
-Then run the following command to install all the required dependencies.  
+Then run the following command to install all required dependencies except torch. 
 ```Python
 pip install -r requirements.txt
 ```
--  If you don't have Anaconda, please download it first. Official website link: https://www.anaconda.com
--  When installing torch, you need to choose the installation command that matches your GPU. You can find the appropriate command on the PyTorch website under Get Started → Previous PyTorch Versions.
+When installing torch, you need to choose the installation command that matches your GPU. You can find the appropriate command on the PyTorch website under Get Started → Previous PyTorch Versions.
 The installation command used in this guide is as follows:
 ```Python
 pip install torch==1.13.0+cu116 torchvision==0.14.0+cu116 --index-url https://download.pytorch.org/whl/cu116
-``` 
+```
+-  If you don't have Anaconda, please download it first. Official website link: https://www.anaconda.com
 ###  2.Create python project named centernetgca  
 Create a new project named centernetgca in PyCharm, select Previously configured Interpreter, and choose the python.exe file located in the target environment folder inside the envs directory of your Anaconda installation.  
 ![Alt Text](project.jpg)
@@ -70,15 +70,15 @@ conda activate centernetgca
 ```Python
 cd C:\Users\name\Desktop
 ```
-再运行下面的指令即可安装所有需要的依赖包
+再运行下面的指令即可安装除torch外需要的依赖包
 ```Python
 pip install -r requirements.txt
 ``` 
--  若无Anaconda，请先下载，官网链接https://www.anaconda.com
--  安装torch时需要根据显卡条件，在pytorch官网-Get Started-Previous PyTorch Versions获取对应的安装命令，本文使用的安装命令如下：
+安装torch时需要根据显卡条件，在pytorch官网-Get Started-Previous PyTorch Versions获取对应的安装命令，本文使用的安装命令如下：
 ```Python
 pip install torch==1.13.0+cu116 torchvision==0.14.0+cu116 --index-url https://download.pytorch.org/whl/cu116
-``` 
+```
+-  若无Anaconda，请先下载，官网链接https://www.anaconda.com
 ###  2.新建python项目
 在PyCharm中新建项目centernetgca，选择Previously confugured Interpreter，并且在Anaconda目录中的env文件夹下目标环境文件夹中选中python.exe文件。  
 ![Alt Text](project.jpg)
